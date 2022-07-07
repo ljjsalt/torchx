@@ -62,11 +62,14 @@ class CommandActor:  # pragma: no cover
         addr, port = get_address_and_port()
         print("get_actor_address_and_port: ", addr, port)
         addr = os.getenv("MY_POD_IP")
-        return addr, port
+        return addr, 49782
 
     def set_address_and_port(self, address: str, port: int) -> None:
         self.master_addr = address
         self.master_port = port
+	print("set_address_and_port: ", address, port)
+	os.environ["MASTER_ADDR"] = address
+        os.environ["MASTER_ADDR"] = port
 
 
 def load_actor_json(filename: str) -> List[RayActor]:
