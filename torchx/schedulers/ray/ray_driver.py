@@ -59,7 +59,10 @@ class CommandActor:  # pragma: no cover
             raise RuntimeError(f"exec_module failed with return code {returncode}")
 
     def get_actor_address_and_port(self) -> Tuple[str, int]:
-        return get_address_and_port()
+        addr, port = get_address_and_port()
+        print("get_actor_address_and_port: ", addr, port)
+        addr = os.getenv("MY_POD_IP")
+        return addr, port
 
     def set_address_and_port(self, address: str, port: int) -> None:
         self.master_addr = address
