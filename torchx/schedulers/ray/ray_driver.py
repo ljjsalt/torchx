@@ -50,6 +50,7 @@ class CommandActor:  # pragma: no cover
         worker_evn.update(os.environ)
         worker_evn.update(self.env)
         worker_evn[TORCHX_RANK0_HOST] = self.master_addr
+        print("command actor: exec_module: ", worker_evn)
         popen = subprocess.Popen(self.cmd, env=worker_evn)
 
         returncode = popen.wait()
@@ -134,6 +135,7 @@ def create_command_actors(
 
 def main() -> None:  # pragma: no cover
     actors: List[RayActor] = load_actor_json("actors.json")
+    print(actors)
     # pyre-fixme[16]: Module `worker` has no attribute `init`.
     ray.init(address="auto", namespace="torchx-ray")
     pg: PlacementGroup = create_placement_group(actors)
