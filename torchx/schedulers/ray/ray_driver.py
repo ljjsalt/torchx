@@ -67,8 +67,8 @@ class CommandActor:  # pragma: no cover
     def set_address_and_port(self, address: str, port: int) -> None:
         self.master_addr = address
         self.master_port = port
-	print("set_address_and_port: ", address, port)
-	os.environ["MASTER_ADDR"] = address
+        print("set_address_and_port: ", address, port)
+        os.environ["MASTER_ADDR"] = address
         os.environ["MASTER_ADDR"] = port
 
 
