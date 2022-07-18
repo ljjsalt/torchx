@@ -139,8 +139,7 @@ def ddp(
     else:
         raise ValueError("failed to compute role_name")
 
-    # rdzv_backend = "c10d"
-    rdzv_backend = "etcd"
+    rdzv_backend = "c10d"
     if (not is_elastic and int(nnodes) == 1) or (
         is_elastic and int(nnodes) == 0 and int(max_nnodes) == 1
     ):
