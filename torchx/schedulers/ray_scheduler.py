@@ -126,7 +126,7 @@ if _has_ray:
         **Config Options**
 
         .. runopts::
-            class: torchx.schedulers.ray_scheduler.RayScheduler
+            class: torchx.schedulers.ray_scheduler.create_scheduler
 
         **Compatibility**
 
@@ -392,12 +392,23 @@ if _has_ray:
             return iterator
 
         def list(self) -> List[str]:
-            raise NotImplementedError()
+            address = os.getenv("RAY_ADDRESS")
+            if not address:
+                raise Exception(
+                    "RAY_ADDRESS env variable is expected to be set to list jobs on ray scheduler."
+                    " See https://docs.ray.io/en/latest/cluster/jobs-package-ref.html#job-submission-sdk for more info"
+                )
+            client = JobSubmissionClient(address)
+            jobs_dict = client.list_jobs()
+            ip = address.split("http://", 1)[-1]
+            app_handles = [f"{ip}-{job_id}" for job_id in jobs_dict.keys()]
+            return app_handles
 
-    def create_scheduler(session_name: str, **kwargs: Any) -> RayScheduler:
-        if not has_ray():  # pragma: no cover
-            raise RuntimeError(
-                "Ray is not installed in the current Python environment."
-            )
 
-        return RayScheduler(session_name=session_name)
+def create_scheduler(session_name: str, **kwargs: Any) -> "RayScheduler":
+    if not has_ray():  # pragma: no cover
+        raise ModuleNotFoundError(
+            "Ray is not installed in the current Python environment."
+        )
+
+    return RayScheduler(session_name=session_name)
