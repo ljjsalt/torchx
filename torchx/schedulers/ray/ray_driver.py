@@ -88,7 +88,9 @@ class CommandActor:  # pragma: no cover
         return CommandActorScheduled(actor_id)
 
     def get_actor_address_and_port(self) -> Tuple[str, int]:
-        return get_address_and_port()
+        addr, port = get_address_and_port()
+        addr = os.getenv("MY_POD_IP")
+        return addr, 49783
 
 
 def load_actor_json(filename: str) -> List[RayActor]:
@@ -242,9 +244,10 @@ class RayDriver:
                             self.rank_0_address, self.rank_0_port = ray.get(
                                 actor.get_actor_address_and_port.remote()  # pyre-ignore
                             )
+                            self.rank_0_port = 49783
                             self.active_tasks.append(
                                 actor.exec_module.remote(  # pyre-ignore
-                                    "localhost", 0, result.id
+                                    self.rank_0_address, self.rank_0_port, result.id
                                 )
                             )
                         else:
