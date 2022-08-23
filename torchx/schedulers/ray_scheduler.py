@@ -327,8 +327,8 @@ if _has_ray:
 
         def _parse_app_id(self, app_id: str) -> str:
             # find index of '-' in the first :\d+-
-            sep = re.search(r':\d+-', app_id).span()[1]
-            addr = app_id[:sep-1]
+            sep = re.search(r":\d+-", app_id).span()[1]
+            addr = app_id[: sep - 1]
             app_id = app_id[sep:]
             return addr, app_id
 

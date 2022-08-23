@@ -302,7 +302,11 @@ if has_ray():
 
         def test_parse_app_id(self) -> None:
             test_addr_appid = [
-                ("0.0.0.0:1234-app_id", "0.0.0.1:1234", "app_id"), # (full address, address:port, app_id)
+                (
+                    "0.0.0.0:1234-app_id",
+                    "0.0.0.1:1234",
+                    "app_id",
+                ),  # (full address, address:port, app_id)
                 ("addr-of-cluster:1234-app-id", "addr-of-cluster:1234", "app-id"),
                 ("www.test.com:1234-app:id", "www.test.com:1234", "app:id"),
             ]
